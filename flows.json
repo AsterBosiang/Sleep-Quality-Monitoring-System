@@ -1,0 +1,551 @@
+[
+    {
+        "id": "12caa9d08f9886f5",
+        "type": "tab",
+        "label": "流程1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "755427bec1fdd56f",
+        "type": "serial in",
+        "z": "12caa9d08f9886f5",
+        "name": "Arduino 輸入",
+        "serial": "a8b465a57dfd0760",
+        "x": 75,
+        "y": 280,
+        "wires": [
+            [
+                "e255b27fa4ebfb65",
+                "722ec982bb7a5b65",
+                "016309ae95dd1b52",
+                "1079110073ebee35",
+                "8df96bb7212f2762",
+                "92ecb8e69d841164",
+                "c266eaed7d02b678",
+                "02d1ef3bac3deff4",
+                "b4112dd59d6489a0"
+            ]
+        ],
+        "l": false
+    },
+    {
+        "id": "8d2d40274844ac22",
+        "type": "ui_gauge",
+        "z": "12caa9d08f9886f5",
+        "name": "",
+        "group": "19d541879e5ba5c7",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "聲音",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "300",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 430,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "415cbc1c3dace107",
+        "type": "ui_gauge",
+        "z": "12caa9d08f9886f5",
+        "name": "",
+        "group": "19d541879e5ba5c7",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "gtype": "wave",
+        "title": "有害氣體",
+        "label": "",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "250",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 440,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "7c66b3072e5eab4c",
+        "type": "ui_gauge",
+        "z": "12caa9d08f9886f5",
+        "name": "",
+        "group": "a082936daabef5fc",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "亮度",
+        "label": "",
+        "format": "{{value}}",
+        "min": "100",
+        "max": "600",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 430,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "e255b27fa4ebfb65",
+        "type": "function",
+        "z": "12caa9d08f9886f5",
+        "name": "聲音",
+        "func": "// 解析從Serial接收到的數據\nvar receivedData = msg.payload.toString().trim(); // 將接收到的數據轉換為字符串並去除首尾空格\n\nif (receivedData[6] === \"1\") {\n    // 將分割後的數據轉換為數字，如果無法轉換則返回NaN\n    var sensor1 = parseFloat(receivedData.slice(8));\n    msg.payload = sensor1;\n    // 返回消息\n    return msg;\n} else {\n    // 如果接收到的數據長度不正確，則返回空消息\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 200,
+        "wires": [
+            [
+                "8d2d40274844ac22",
+                "79c502c0b68c43b1"
+            ]
+        ]
+    },
+    {
+        "id": "722ec982bb7a5b65",
+        "type": "function",
+        "z": "12caa9d08f9886f5",
+        "name": "有害氣體",
+        "func": "// 解析從Serial接收到的數據\nvar receivedData = msg.payload.toString().trim(); // 將接收到的數據轉換為字符串並去除首尾空格\n\nif (receivedData[6] === \"2\") {\n    // 將分割後的數據轉換為數字，如果無法轉換則返回NaN\n    var sensor2 = parseFloat(receivedData.slice(8));\n    msg.payload = sensor2;\n    // 返回消息\n    return msg;\n} else {\n    // 如果接收到的數據長度不正確，則返回空消息\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 280,
+        "wires": [
+            [
+                "415cbc1c3dace107",
+                "6fe31a148364b0ce"
+            ]
+        ]
+    },
+    {
+        "id": "016309ae95dd1b52",
+        "type": "function",
+        "z": "12caa9d08f9886f5",
+        "name": "亮度",
+        "func": "// 解析從Serial接收到的數據\nvar receivedData = msg.payload.toString().trim(); // 將接收到的數據轉換為字符串並去除首尾空格\n\nif (receivedData[6] === \"3\") {\n    // 將分割後的數據轉換為數字，如果無法轉換則返回NaN\n    var sensor3 = parseFloat(receivedData.slice(8));\n    msg.payload = sensor3;\n    // 返回消息\n    return msg;\n} else {\n    // 如果接收到的數據長度不正確，則返回空消息\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 290,
+        "y": 360,
+        "wires": [
+            [
+                "7c66b3072e5eab4c",
+                "243b8ed7a76ed11d"
+            ]
+        ]
+    },
+    {
+        "id": "c266eaed7d02b678",
+        "type": "function",
+        "z": "12caa9d08f9886f5",
+        "name": "聲音 - 資料庫",
+        "func": "// 解析從Serial接收到的數據\nvar receivedData = msg.payload.toString().trim();\n// 獲取當前時間\nvar curTime = new Date().getTime();\n// 獲取上次時間\nvar lastProcessedTime = context.get('lastProcessedTime') || 0;\n// 設定時間間隔\nvar interval = 10000; // 10秒\n\nif (receivedData[6] === \"1\" && (curTime - lastProcessedTime >= interval)) {\n    // 更新上次時間\n    context.set('lastProcessedTime', currentTime);\n    var sound = parseFloat(receivedData.slice(8));\n    // 獲取當前時間\n    var currentTime = new Date();\n    var year = currentTime.getFullYear();\n    var month = ('0' + (currentTime.getMonth() + 1)).slice(-2);\n    var day = ('0' + currentTime.getDate()).slice(-2);\n    var hours = ('0' + currentTime.getHours()).slice(-2);\n    var minutes = ('0' + currentTime.getMinutes()).slice(-2);\n    var seconds = ('0' + currentTime.getSeconds()).slice(-2);\n    var formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;\n    // 生成SQL插入語句，將時間戳加入數據中\n    var sql = `INSERT INTO inform (time, sound) VALUES ('${formattedTime}', ${sound});`;\n\n    // 設置返回的消息\n    msg.topic = sql;\n    return msg;\n}\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 40,
+        "wires": [
+            [
+                "eb854320876fbbee"
+            ]
+        ]
+    },
+    {
+        "id": "1079110073ebee35",
+        "type": "function",
+        "z": "12caa9d08f9886f5",
+        "name": "亮度 - Line Notify",
+        "func": "// 解析從Serial接收到的數據\nvar receivedData = msg.payload.toString().trim(); // 將接收到的數據轉換為字符串並去除首尾空格\n\nif (receivedData[6] === \"3\") {\n    // 將分割後的數據轉換為數字，如果無法轉換則返回NaN\n    var sensorValue = parseFloat(receivedData.slice(8));\n    // 獲取之前的數值\n    var previousValue = context.get(\"previousValue\");\n    if (previousValue === undefined) {\n        context.set(\"previousValue\", sensorValue);\n    } else if ((previousValue >= 300 && sensorValue >= 300) || (previousValue < 300 && sensorValue < 300)) {\n        return null;\n    } else {\n        context.set(\"previousValue\", sensorValue);\n    }\n    var message;\n    if (sensorValue >= 300)\n        message = \"房間明亮\";\n    else\n        message = \"房間昏暗\";\n    msg.payload = message;\n\n    // 返回消息\n    return msg;\n} else {\n    // 如果接收到的非該感測器數據，則返回空消息\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 520,
+        "wires": [
+            [
+                "9c7f29a829aaa028"
+            ]
+        ]
+    },
+    {
+        "id": "9c7f29a829aaa028",
+        "type": "line-notify",
+        "z": "12caa9d08f9886f5",
+        "name": "",
+        "message": "",
+        "contentType": "message",
+        "imageThumbnail": "",
+        "imageUrl": "",
+        "sticker": "default",
+        "stickerPackageId": "1",
+        "stickerId": "1",
+        "silent": false,
+        "creds": "1854d14b3b0738ef",
+        "x": 560,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "23640cfb47ddce4b",
+        "type": "inject",
+        "z": "12caa9d08f9886f5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "開始偵測",
+        "payloadType": "str",
+        "x": 360,
+        "y": 560,
+        "wires": [
+            [
+                "9c7f29a829aaa028"
+            ]
+        ]
+    },
+    {
+        "id": "92ecb8e69d841164",
+        "type": "function",
+        "z": "12caa9d08f9886f5",
+        "name": "聲音 - Line Notify",
+        "func": "// 解析從Serial接收到的數據\nvar receivedData = msg.payload.toString().trim(); // 將接收到的數據轉換為字符串並去除首尾空格\n// 獲取當前時間\nvar currentTime = new Date().getTime();\n// 獲取上次時間\nvar lastProcessedTime = context.get('lastProcessedTime') || 0;\n// 設定時間間隔\nvar interval = 300000; // 5分鐘\nif (receivedData[6] === \"1\" && (currentTime - lastProcessedTime >= interval)) {\n    // 更新上次時間\n    context.set('lastProcessedTime', currentTime);\n    // 將分割後的數據轉換為數字，如果無法轉換則返回NaN\n    var sensorValue = parseFloat(receivedData.slice(8));\n    // 獲取之前的數值\n    var previousValue = context.get(\"previousValue\");\n    if (previousValue === undefined) {\n        context.set(\"previousValue\", sensorValue);\n    } else if (previousValue < 200 && sensorValue < 200) {\n        return null;\n    } else {\n        context.set(\"previousValue\", sensorValue);\n    }\n    var message;\n    if (sensorValue >= 200) {\n        message = \"過於吵鬧，請安靜\";\n    } else {\n        message = \"安靜狀態\";\n    }\n    msg.payload = message;\n\n    // 返回消息\n    return msg;\n} else {\n    // 如果接收到的非該感測器數據，則返回空消息\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 440,
+        "wires": [
+            [
+                "9c7f29a829aaa028"
+            ]
+        ]
+    },
+    {
+        "id": "8df96bb7212f2762",
+        "type": "function",
+        "z": "12caa9d08f9886f5",
+        "name": "有害氣體 - Line Notify",
+        "func": "// 解析從Serial接收到的數據\nvar receivedData = msg.payload.toString().trim(); // 將接收到的數據轉換為字符串並去除首尾空格\n// 獲取當前時間\nvar currentTime = new Date().getTime();\n// 獲取上次時間\nvar lastProcessedTime = context.get('lastProcessedTime') || 0;\n// 設定時間間隔\nvar interval = 30000; // 30秒\nif (receivedData[6] === \"2\" && (currentTime - lastProcessedTime >= interval)) {\n    // 更新上次時間\n    context.set('lastProcessedTime', currentTime);\n    // 將分割後的數據轉換為數字，如果無法轉換則返回NaN\n    var sensorValue = parseFloat(receivedData.slice(8));\n    // 獲取之前的數值\n    var previousValue = context.get(\"previousValue\");\n    if (previousValue === undefined) {\n        context.set(\"previousValue\", sensorValue);\n    } else if (previousValue < 160 && sensorValue < 160) {\n        return null;\n    } else {\n        context.set(\"previousValue\", sensorValue);\n    }\n    var message;\n    if (sensorValue >= 160) {\n        message = \"有害氣體過多，盡速開窗\";\n    } else {\n        message = \"空氣正常\";\n    }\n    msg.payload = message;\n\n    // 返回消息\n    return msg;\n} else {\n    // 如果接收到的非該感測器數據，則返回空消息\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 480,
+        "wires": [
+            [
+                "9c7f29a829aaa028"
+            ]
+        ]
+    },
+    {
+        "id": "eb854320876fbbee",
+        "type": "mysql",
+        "z": "12caa9d08f9886f5",
+        "mydb": "180789266ac3ec9e",
+        "name": "資料庫",
+        "x": 570,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "02d1ef3bac3deff4",
+        "type": "function",
+        "z": "12caa9d08f9886f5",
+        "name": "有害氣體 - 資料庫",
+        "func": "// 解析從Serial接收到的數據\nvar receivedData = msg.payload.toString().trim();\n// 獲取當前時間\nvar curTime = new Date().getTime();\n// 獲取上次時間\nvar lastProcessedTime = context.get('lastProcessedTime') || 0;\n// 設定時間間隔\nvar interval = 10000; // 10秒\n\nif (receivedData[6] === \"2\" && (curTime - lastProcessedTime >= interval)) {\n    // 更新上次時間\n    context.set('lastProcessedTime', currentTime);\n    var gas = parseFloat(receivedData.slice(8));\n    // 獲取當前時間\n    var currentTime = new Date();\n    var year = currentTime.getFullYear();\n    var month = ('0' + (currentTime.getMonth() + 1)).slice(-2);\n    var day = ('0' + currentTime.getDate()).slice(-2);\n    var hours = ('0' + currentTime.getHours()).slice(-2);\n    var minutes = ('0' + currentTime.getMinutes()).slice(-2);\n    var seconds = ('0' + currentTime.getSeconds()).slice(-2);\n    var formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;\n    // 生成SQL插入語句，將時間戳加入數據中\n    var sql = `UPDATE inform SET gas = '${gas}' WHERE time = '${formattedTime}'`;\n\n    // 設置返回的消息\n    msg.topic = sql;\n    return msg;\n}\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 80,
+        "wires": [
+            [
+                "eb854320876fbbee"
+            ]
+        ]
+    },
+    {
+        "id": "b4112dd59d6489a0",
+        "type": "function",
+        "z": "12caa9d08f9886f5",
+        "name": "光線 - 資料庫",
+        "func": "// 解析從Serial接收到的數據\nvar receivedData = msg.payload.toString().trim();\n// 獲取當前時間\nvar curTime = new Date().getTime();\n// 獲取上次時間\nvar lastProcessedTime = context.get('lastProcessedTime') || 0;\n// 設定時間間隔\nvar interval = 10000; // 10秒\n\nif (receivedData[6] === \"3\" && (curTime - lastProcessedTime >= interval)) {\n    // 更新上次時間\n    context.set('lastProcessedTime', currentTime);\n    var light = parseFloat(receivedData.slice(8));\n    // 獲取當前時間\n    var currentTime = new Date();\n    var year = currentTime.getFullYear();\n    var month = ('0' + (currentTime.getMonth() + 1)).slice(-2);\n    var day = ('0' + currentTime.getDate()).slice(-2);\n    var hours = ('0' + currentTime.getHours()).slice(-2);\n    var minutes = ('0' + currentTime.getMinutes()).slice(-2);\n    var seconds = ('0' + currentTime.getSeconds()).slice(-2);\n    var formattedTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;\n    // 生成SQL插入語句，將時間戳加入數據中\n    var sql = `UPDATE inform SET light = '${light}' WHERE time = '${formattedTime}'`;\n\n    // 設置返回的消息\n    msg.topic = sql;\n    return msg;\n}\n\n\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 310,
+        "y": 120,
+        "wires": [
+            [
+                "eb854320876fbbee"
+            ]
+        ]
+    },
+    {
+        "id": "79c502c0b68c43b1",
+        "type": "change",
+        "z": "12caa9d08f9886f5",
+        "name": "聲音 - 折線圖",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "聲音",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 450,
+        "y": 220,
+        "wires": [
+            [
+                "9e13d2bb4e9cca79"
+            ]
+        ]
+    },
+    {
+        "id": "6fe31a148364b0ce",
+        "type": "change",
+        "z": "12caa9d08f9886f5",
+        "name": "有害氣體 - 折線圖",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "有害氣體",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 470,
+        "y": 300,
+        "wires": [
+            [
+                "9e13d2bb4e9cca79"
+            ]
+        ]
+    },
+    {
+        "id": "243b8ed7a76ed11d",
+        "type": "change",
+        "z": "12caa9d08f9886f5",
+        "name": "亮度 - 折線圖",
+        "rules": [
+            {
+                "t": "set",
+                "p": "topic",
+                "pt": "msg",
+                "to": "亮度",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 450,
+        "y": 380,
+        "wires": [
+            [
+                "9e13d2bb4e9cca79"
+            ]
+        ]
+    },
+    {
+        "id": "9e13d2bb4e9cca79",
+        "type": "ui_chart",
+        "z": "12caa9d08f9886f5",
+        "name": "",
+        "group": "a082936daabef5fc",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "800",
+        "removeOlder": "10",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 690,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a8b465a57dfd0760",
+        "type": "serial-port",
+        "name": "",
+        "serialport": "COM5",
+        "serialbaud": "9600",
+        "databits": "8",
+        "parity": "none",
+        "stopbits": "1",
+        "waitfor": "",
+        "dtr": "none",
+        "rts": "none",
+        "cts": "none",
+        "dsr": "none",
+        "newline": "\\n",
+        "bin": "false",
+        "out": "char",
+        "addchar": "",
+        "responsetimeout": "1000"
+    },
+    {
+        "id": "19d541879e5ba5c7",
+        "type": "ui_group",
+        "name": "感測器1",
+        "tab": "8503f68c9dd30e73",
+        "order": 1,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a082936daabef5fc",
+        "type": "ui_group",
+        "name": "感測器2",
+        "tab": "8503f68c9dd30e73",
+        "order": 2,
+        "disp": true,
+        "width": 7,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "1854d14b3b0738ef",
+        "type": "linetoken",
+        "name": "環境監視器"
+    },
+    {
+        "id": "180789266ac3ec9e",
+        "type": "MySQLdatabase",
+        "name": "",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "detect_dbl",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "8503f68c9dd30e73",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
